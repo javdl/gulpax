@@ -202,7 +202,7 @@ gulp.task('html', function() {
 
        .pipe($.if('*.css', $.uncss({
             html: [
-                'app/metalsmith-dist/**/*.html'
+                'app/metalsmith-dist/index.html'
                 /*
                 'app/index.html',
                 'app/styleguide.html',
@@ -553,7 +553,7 @@ gulp.task('criticalstyles', ['copystyles'], function(cb) {
     critical.generateInline({
         base: 'dist/',
         src: 'index.html',
-        styleTarget: 'styles/main.css',
+        styleTarget: '/styles/main.css',
         htmlTarget: 'index.html',
         width: 320,
         height: 480,

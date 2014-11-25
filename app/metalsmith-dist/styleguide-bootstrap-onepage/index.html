@@ -21,7 +21,11 @@
     <meta name="msapplication-TileImage" content="/images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
-    <link rel="stylesheet" href="/styles/main.css">
+    <!-- styles/main.css is where we initially write all your CSS and then overwrite it with your critical path CSS. Your site-wide styles are in styles/site.css, which we async load in via JavaScript lower down in the page  -->
+        <!-- build:css /styles/main.css -->
+        <!-- bower:css -->
+        <link rel="stylesheet" href="/styles/main.css">
+        <!-- endbuild -->
 
     <!-- build:js /scripts/main.min.js async defer -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
