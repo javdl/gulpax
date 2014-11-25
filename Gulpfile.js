@@ -261,8 +261,15 @@ gulp.task('serve', ['styles', 'metalsmith'], function() {
         server: {
             baseDir: ['.tmp', 'app/metalsmith-dist', 'app'],
             routes: {
-                // "/bower_components": "./bower_components",
+                // Asset folders need to be added to work with Metalsmith subfolders
+                /*
+                "/bower_components": "./bower_components",
+                "styles": "./styles",
+                "scripts": "./scripts",
+                "/images": "./images",
+                */
                 "/fonts": "./dist/fonts"
+
             }
         }
     });
