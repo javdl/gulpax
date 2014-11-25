@@ -1,0 +1,38 @@
+{
+  "name": "Gulp-Metalsmith-Bootstrap-3-Boilerplate",
+  "description": "Boilerplate aiming to embrace best practices provided by Google Web Starter kit and combining them with a Metalsmith static site generator in Gulp",
+  "version": "0.0.0",
+  "keywords": [
+    "css",
+    "js",
+    "less",
+    "sass",
+    "mobile-first",
+    "responsive",
+    "front-end",
+    "framework",
+    "web"
+  ],
+  "authors": [
+    "Joost van der Laan <joost@joostvanderlaan.nl>"
+  ],
+  "homepage": "joostvanderlaan.nl",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "bootstrap": "~3.2.0",
+    "font-awesome": "~4.2.0",
+    "jquery": "~2.1.1",
+    "bootstrap-sass-official": "~3.2.0",
+    "scotch-panels": "~1.0.3",
+    "lunr.js": "~0.5.6",
+    "highlight": "~7.0.1"
+  }
+}

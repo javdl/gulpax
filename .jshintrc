@@ -1,0 +1,45 @@
+// --------------------------------------------------------------------
+// JSHint Configuration
+// --------------------------------------------------------------------
+//
+// http://www.jshint.com/
+// http://jshint.com/docs/options/
+{
+    // Predefined globals whom JSHint will ignore.
+    //"jquery": false,
+
+    // Google Web Starter Kit
+    "node": true,
+    "browser": true,
+    "esnext": true,
+    "bitwise": true,
+    "camelcase": true,
+    "curly": true,
+    "eqeqeq": true,
+    "immed": true,
+    "indent": 2,
+    "newcap": true,
+    "noarg": true,
+    "quotmark": "single",
+    "undef": true,
+    "unused": "vars",
+    "strict": true,
+
+    // == Undocumented Options ============================================
+    //
+    // If you are using some global variable, for example `define`, or `$`, please
+    // make it available within your JS file by passing it to the wrapper anonymous
+    // function like so:
+    //
+    // (function (define, $) {
+    // 'use strict';
+    // // Your content goes here which uses `define`, and `$`.
+    // }).call(this, window.define, window.jQuery);
+    //
+    // The parameter "predef" should remain empty for this configuration file
+    // to remain as general as possible.
+    "predef": [
+        // jQuery library.
+        "jQuery", "$"
+    ]
+}

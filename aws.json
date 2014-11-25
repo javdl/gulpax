@@ -1,0 +1,6 @@
+{
+    "key": "",
+    "secret": "",
+    "bucket": "example.com.s3.amazonaws.com",
+    "region": "eu-west-1"
+}

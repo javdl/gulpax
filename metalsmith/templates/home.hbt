@@ -1,0 +1,6 @@
+{{> header}}
+      <div class="jumbotron">
+		<h1>{{ title }}</h1>
+    	{{{ contents }}}
+      </div>
+{{> footer}}
