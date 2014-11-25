@@ -189,10 +189,11 @@ gulp.task('styles', function() {
 gulp.task('html', function() {
     var assets = $.useref.assets({searchPath: '{.tmp,app}'});
 
-    return gulp.src('app/**/*.html')
+    return gulp.src('app/metalsmith-dist/**/*.html')
         .pipe(assets)
         // Concatenate And Minify JavaScript
         .pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
+        // .pipe(uglify().on('error', function(e) { console.log('\x07',e.message); return this.end(); }))
 
     // Remove Any Unused CSS
     // In projects using CSS frameworks like Bootstrap, Foundation and so forth you typically don’t use the entire kitchen-sink of styles available. Rather than shipping the full framework to production, use UnCSS to remove unused styles across your pages. Some developers have seen anything up to 85% savings in stylesheet filesize.
@@ -441,9 +442,11 @@ gulp.task('metalsmith', ['metalsmith-clean'], function() {
                 templateName: 'post.hbt'
             }))
             .use(markdown())
+          /* Breaks assets not using prepend / */
             .use(permalinks({
                 pattern: ':title'
             }))
+            
             .use(templates(configtemplates))
             // LUNR.js search engine
             /*            
