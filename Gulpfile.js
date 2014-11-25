@@ -198,6 +198,7 @@ gulp.task('html', function() {
     // In projects using CSS frameworks like Bootstrap, Foundation and so forth you typically don’t use the entire kitchen-sink of styles available. Rather than shipping the full framework to production, use UnCSS to remove unused styles across your pages. Some developers have seen anything up to 85% savings in stylesheet filesize.
     // Note: If not using the Style Guide, you can delete it from
     // the next line to only include styles your project uses.
+     /*
        .pipe($.if('*.css', $.uncss({
             html: [
                 'app/index.html',
@@ -210,7 +211,7 @@ gulp.task('html', function() {
                 /.app-bar.open/
             ]
         })))
-
+*/
     // Concatenate And Minify Styles
     // In case you are still using useref build blocks
     .pipe($.if('*.css', $.csso()))
