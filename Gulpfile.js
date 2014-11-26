@@ -99,17 +99,16 @@ gulp.task('copy', function() {
 });
 
 // Copy All Files At The Root Level (src)
-gulp.task('copymetalsmithtoroot', function() {
-    return gulp.src([
-            'dist/metalsmith-dist/**/*'
-        ], {
-            dot: true
-        })
-        .pipe(gulp.dest('dist'))
-        .pipe($.size({
-            title: 'copy metalsmith-dist to dist root'
-        }));
-});
+//gulp.task('copymetalsmithtoroot', function() {
+ //   return gulp.src([
+ //           'dist/metalsmith-dist/**/*'
+     //   ], {
+       //     dot: true
+       // })
+        //.pipe(gulp.dest('dist'))
+        //.pipe($.size({title: 'copy metalsmith-dist to dist root'}));
+//});
+
 
 // Fonts
 gulp.task('fonts', function() {
@@ -124,20 +123,13 @@ gulp.task('fonts', function() {
     gulp.src(fontSrc)
         .pipe($.changed(fontDst))
         .pipe(gulp.dest('dist/fonts/'))
-        .pipe($.size({
-            title: 'fonts'
-        }))
+        .pipe($.size({title: 'fonts (before zopfli compression)'}))
         // .pipe($.gzip())
         // Better compression algorithm, at least for fonts
         .pipe($.zopfli())
         .pipe(gulp.dest('dist/fonts/'))
-        .pipe($.size({
-            title: 'fonts gz'
-        }))
-
-    .pipe($.notify({
-        message: 'Fonts task complete'
-    }));
+        .pipe($.size({title: 'fonts (after zopfli compression)'}))
+    	.pipe($.notify({message: 'Fonts task complete'}));
 });
 
 
@@ -150,40 +142,29 @@ gulp.task('styles', function() {
             'app/styles/**/*.css'
             //  'app/styles/components/components.scss'
         ])
-        .pipe($.changed('styles', {
-            extension: '.scss'
-        }))
+        .pipe($.changed('styles', {extension: '.scss'}))
         .pipe($.sass({
             precision: 10
         }))
         .on('error', console.error.bind(console))
-        .pipe($.autoprefixer({
-            browsers: AUTOPREFIXER_BROWSERS
-        }))
+        .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
         .pipe(gulp.dest('.tmp/styles'))
-        .pipe(gulp.dest('dist/styles'))
         // Concatenate And Minify Styles
         .pipe($.if('*.css', $.csso()))
+        /* // Rename files to .min.css (not really needed)
+        .pipe(gulp.dest('dist/styles'))
         .pipe($.rename(function(path) {
             if (path.extname === '.css') {
                 path.basename += '.min';
             }
-        }))
+        }))*/
         .pipe(gulp.dest('dist/styles'))
+        .pipe($.size({title: 'styles before gzip'}))
+        // Create pre-gzipped versions (allows faster serving with NGINX for example)
         .pipe($.gzip())
         .pipe(gulp.dest('dist/styles'))
-        .pipe($.size({
-            title: 'styles'
-        }));
+        .pipe($.size({title: 'styles after gzip'}));
 });
-
-/*
-        .pipe(rename(function(path) {
-            if (path.extname === '.css') {
-                path.basename += '.min';
-            }
-        }))
-*/
 
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function() {
@@ -235,12 +216,10 @@ gulp.task('html', function() {
 
 
 // Task clean the build folder - Removes all files from the dist folder
-// Clean Output Directorys
-gulp.task('clean', del.bind(null, ['.tmp', 'dist'], {
-    dot: true
-}));
+// Clean Output Directory
+gulp.task('clean', del.bind(null, ['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
-gulp.task('metalsmith-clean', del.bind(null, ['.tmp', 'app/metalsmith-dist'], {
+gulp.task('metalsmith-clean', del.bind(null, ['app/metalsmith-dist'], {
     dot: true
 }));
 
@@ -266,12 +245,12 @@ gulp.task('serve', ['styles', 'metalsmith'], function() {
             routes: {
                 // Asset folders need to be added to work with Metalsmith subfolders
                 /*
-                "/bower_components": "./bower_components",
-                "styles": "./styles",
-                "scripts": "./scripts",
-                "/images": "./images",
+                '/bower_components': './bower_components',
+                'styles': './styles',
+                'scripts': './scripts',
+                '/images': './images',
                 */
-                "/fonts": "./dist/fonts"
+                '/fonts': './dist/fonts'
 
             }
         }
@@ -306,9 +285,20 @@ gulp.task('default', ['clean'], function (cb) {
   runSequence('styles', ['jshint', 'html', 'images', 'fonts', 'copy'], cb);
 });
 */
-gulp.task('default', ['clean'], function(cb) {
-    runSequence(['styles', 'metalsmith'], ['jshint', 'html', 'images', 'fonts', 'copy'], 'copymetalsmithtoroot', cb);
+// 'copy'], 'copymetalsmithtoroot'
+
+gulp.task('build', function(cb) {
+	runSequence('styles', ['jshint', 'html', 'images', 'fonts', 'copy'], cb);
 });
+
+// Without Metalsmith build as a dependency
+gulp.task('default', ['clean'], function(cb) {
+    runSequence('build', ['jshint', 'html', 'images', 'fonts', 'copy'], cb);
+});
+// With metalsmith build dependency
+// gulp.task('default', ['clean'], function(cb) {
+//    runSequence(['styles', 'metalsmith'], ['jshint', 'html', 'images', 'fonts', 'copy'], 'copymetalsmithtoroot', cb);
+// });
 
 // Run PageSpeed Insights
 // Update `url` below to the public URL for your site
@@ -539,10 +529,15 @@ gulp.task('copystyles', function() {
 });
 
 // Generate & Inline Critical-path CSS
+// Needed when using Metalsmith build as a dependency
+/*
 gulp.task('critical', function(cb) {
     runSequence('default', ['criticalstyles'], cb);
 });
-gulp.task('criticalstyles', ['copystyles'], function(cb) {
+*/
+
+// gulp.task('criticalstyles', ['copystyles'], function(cb) {
+gulp.task('critical', ['build', 'copystyles'], function (cb) {
     // At this point, we have our
     // production styles in main/styles.css
     // As we're going to overwrite this with
@@ -553,7 +548,7 @@ gulp.task('criticalstyles', ['copystyles'], function(cb) {
     critical.generateInline({
         base: 'dist/',
         src: 'index.html',
-        styleTarget: '/styles/main.css',
+        styleTarget: 'styles/main.css',
         htmlTarget: 'index.html',
         width: 320,
         height: 480,
