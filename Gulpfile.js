@@ -56,10 +56,7 @@ gulp.task('jshint', function() {
         .pipe($.jshint())
         .pipe($.jshint.reporter('jshint-stylish'))
         .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
-
-    .pipe($.notify({
-        message: 'JsHint task complete'
-    }));
+        .pipe($.notify({message: 'JsHint task complete'}));
 });
 
 
@@ -73,12 +70,32 @@ gulp.task('images', function() {
         .pipe($.changed(imgDst))
         .pipe($.imagemin())
         .pipe(gulp.dest(imgDst))
-
-    .pipe($.notify({
-        message: 'Images task complete'
-    }));
+        .pipe($.notify({message: 'Images task complete'}));
 });
 
+gulp.task('images-responsive', function() {
+    // minify new images only
+    var imgSrc = './app/images/**/*.{png,gif,jpg,ico,svg}',
+        imgDst = './dist/images';
+
+      //   return gulp.src('./app/images/*.jpg')
+    gulp.src(imgSrc)
+    .pipe($.responsive([{
+      name: 'test.png',
+      width: 200
+    },{
+      name: 'test.png',
+      width: 200 * 2,
+      rename: 'test@2x.png'
+    },{
+      name: 'background-*.png',
+      width: 700
+    },{
+      name: 'cover.png',
+      width: '50%'
+    }]))
+    .pipe(gulp.dest(imgDst));
+});
 
 // Copy All Files At The Root Level (src)
 gulp.task('copy', function() {
@@ -93,9 +110,7 @@ gulp.task('copy', function() {
             dot: true
         })
         .pipe(gulp.dest('dist'))
-        .pipe($.size({
-            title: 'copy'
-        }));
+        .pipe($.size({title: 'copy task'}));
 });
 
 // Copy All Files At The Root Level (src)
