@@ -41,7 +41,5 @@
 
 </head>
 <body>
-
-        <div class="main-wrapper">
-
-            <div class="container">
+    <div class="main-wrapper">
+        <div class="container">

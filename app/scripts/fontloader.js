@@ -13,7 +13,7 @@
       'use strict';
       // once cached, the css file is stored on the client forever unless
       // the URL below is changed. Any change will invalidate the cache
-      var css_href = './styles/fonts-base64.css';
+      var CssHref = './styles/fonts-base64.css';
       // a simple event handler wrapper
       function on(el, ev, callback) {
         if (el.addEventListener) {
@@ -24,7 +24,7 @@
       }
       
       // if we have the fonts in localStorage or if we've cached them using the native batrowser cache
-      if ((window.localStorage && localStorage.font_css_cache) || document.cookie.indexOf('font_css_cache') > -1){
+      if ((window.localStorage && localStorage.FontCssCache) || document.cookie.indexOf('FontCssCache') > -1){
         // just use the cached version
         injectFontsStylesheet();
       } else {
@@ -34,7 +34,7 @@
       
       // quick way to determine whether a css file has been cached locally
       function fileIsCached(href) {
-        return window.localStorage && localStorage.font_css_cache && (localStorage.font_css_cache_file === href);
+        return window.localStorage && localStorage.FontCssCache && (localStorage.FontCssCacheFile === href);
       }
 
       // time to get the actual css file
@@ -42,23 +42,23 @@
        // if this is an older browser
         if (!window.localStorage || !window.XMLHttpRequest) {
           var stylesheet = document.createElement('link');
-          stylesheet.href = css_href;
+          stylesheet.href = CssHref;
           stylesheet.rel = 'stylesheet';
           stylesheet.type = 'text/css';
           document.getElementsByTagName('head')[0].appendChild(stylesheet);
           // just use the native browser cache
           // this requires a good expires header on the server
-          document.cookie = 'font_css_cache';
+          document.cookie = 'FontCssCache';
         
         // if this isn't an old browser
         } else {
            // use the cached version if we already have it
-          if (fileIsCached(css_href)) {
-            injectRawStyle(localStorage.font_css_cache);
+          if (fileIsCached(CssHref)) {
+            injectRawStyle(localStorage.FontCssCache);
           // otherwise, load it with ajax
           } else {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', css_href, true);
+            xhr.open('GET', CssHref, true);
             // cater for IE8 which does not support addEventListener or attachEvent on XMLHttpRequest
             xhr.onreadystatechange = function () {
               if (xhr.readyState === 4) {
@@ -66,8 +66,8 @@
                 injectRawStyle(xhr.responseText);
                 // and cache the text content for further use
                 // notice that this overwrites anything that might have already been previously cached
-                localStorage.font_css_cache = xhr.responseText;
-                localStorage.font_css_cache_file = css_href;
+                localStorage.FontCssCache = xhr.responseText;
+                localStorage.FontCssCacheFile = CssHref;
               }
             };
             xhr.send();
