@@ -87,7 +87,7 @@ gulp.task('images-responsive', function(cb) {
 gulp.task('image-large', function(){
     // minify new images only
     var imgSrc = './app/images/**/*.{jpeg,jpg,png,tiff,webp}',
-        imgDst = './dist/images/sharp';
+        imgDst = './dist/images';
     gulp.src(imgSrc)
     .pipe($.sharp({
       resize : [1024],
@@ -104,7 +104,7 @@ gulp.task('image-large', function(){
 gulp.task('image-medium', function(){
     // minify new images only
     var imgSrc = './app/images/**/*.{jpeg,jpg,png,tiff,webp}',
-        imgDst = './dist/images/sharp';
+        imgDst = './dist/images';
     gulp.src(imgSrc)
     .pipe($.sharp({
       resize : [640],
@@ -121,7 +121,7 @@ gulp.task('image-medium', function(){
 gulp.task('image-small', function(){
     // minify new images only
     var imgSrc = './app/images/**/*.{jpeg,jpg,png,tiff,webp}',
-        imgDst = './dist/images/sharp';
+        imgDst = './dist/images';
     gulp.src(imgSrc)
     .pipe($.sharp({
       resize : [320],
@@ -212,11 +212,7 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('dist/fonts/'))
         .pipe($.size({
             title: 'fonts gz'
-        }))
-
-    .pipe($.notify({
-        message: 'Fonts task complete'
-    }));
+        }));
 });
 
 
@@ -352,7 +348,7 @@ gulp.task('serve', ['styles', 'metalsmith'], function() {
                 */
                 "/fonts": "./dist/fonts",
                 // for srcset responsive images loading
-                "/images": "./dist/images"
+//                "/images": "./dist/images"
 
             }
         }
@@ -600,11 +596,9 @@ gulp.task('metalsmith', ['metalsmith-clean'], function() {
         )
         .pipe(gulp.dest('./' + path.build))
         //    .pipe($.connect.reload());
-
-    .pipe($.notify({
-        message: 'Metalsmith page complete'
-    }));
-
+ .pipe($.size({
+            title: 'Metalsmith pages'
+        }));
 });
 
 // Critical Render path CSS tasks - https://github.com/addyosmani/critical-path-css-demo#tutorial
@@ -621,7 +615,7 @@ gulp.task('copystyles', function() {
 
 // Generate & Inline Critical-path CSS
 gulp.task('critical', function(cb) {
-    runSequence('default', ['criticalstyles'], cb);
+    runSequence(['default'], ['criticalstyles'], cb);
 });
 gulp.task('criticalstyles', ['copystyles'], function(cb) {
     // At this point, we have our

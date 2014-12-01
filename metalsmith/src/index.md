@@ -13,8 +13,8 @@ Gulp Metalsmith Bootstrap 3 Boilerplate packing all the stuff you need to create
      alt="gulpstrap" />
      </picture>
 <picture>
-<img class="img-responsive" src="/images/gulpstrap-large.jpg"
-     srcset="/images/gulpstrap-large.jpg 1024w, gulpstrap-medium.jpg 640w, gulpstrap-small.jpg 320w"
+<img class="img-responsive" src="images/gulpstrap-large.jpg"
+     srcset="images/gulpstrap-large.jpg 1024w, images/gulpstrap-medium.jpg 640w, images/gulpstrap-small.jpg 320w"
      sizes="100vw"
      alt="gulpstrap" />
 </picture>
