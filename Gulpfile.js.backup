@@ -350,9 +350,7 @@ gulp.task('serve', ['styles', 'metalsmith'], function() {
                 "scripts": "./scripts",
                 "/images": "./images",
                 */
-                "/fonts": "./dist/fonts",
-                // for srcset responsive images loading
-                "/images": "./dist/images"
+                "/fonts": "./dist/fonts"
 
             }
         }
