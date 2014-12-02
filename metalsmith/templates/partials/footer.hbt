@@ -1,10 +1,12 @@
-				<hr>
+      </main>
+			<hr>
         		<footer>
-        			<small>Built with love by <span itemscope itemtype="http://schema.org/Person">
-  					<span itemprop="name">Joost van der Laan</span> <a href="https://twitter.com/javdl" target="_blank">@javdl</a>
-  					</span></small>
-				</footer>
-			</div> {{!-- /container --}}
+        			 <small>Built with love by <span itemscope itemtype="http://schema.org/Person">
+  					     <span itemprop="name">Joost van der Laan</span> <a href="https://twitter.com/javdl" target="_blank">@javdl</a>
+  					     </span>
+               </small>
+				    </footer>
+			   </div> {{!-- /container --}}
    		</div> {{!-- /main-wrapper --}}
    		{{> navbar}}
     </body>
