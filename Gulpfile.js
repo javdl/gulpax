@@ -74,9 +74,9 @@ gulp.task('images', function() {
         .pipe($.imagemin())
         .pipe(gulp.dest(imgDst))
 
-    .pipe($.notify({
-        message: 'Images task complete'
-    }));
+    .pipe($.size({
+            title: 'images'
+        }));
 });
 
 // Generate responsive images in sizes large, medium small + original file
@@ -348,7 +348,7 @@ gulp.task('serve', ['styles', 'metalsmith'], function() {
                 */
                 "/fonts": "./dist/fonts",
                 // for srcset responsive images loading
-//                "/images": "./dist/images"
+                "/images": "./dist/images"
 
             }
         }
@@ -358,6 +358,8 @@ gulp.task('serve', ['styles', 'metalsmith'], function() {
     gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
     gulp.watch(['app/scripts/**/*.js'], ['jshint']);
     gulp.watch(['app/images/**/*'], reload);
+    gulp.watch(['metalsmith/src/**/*.md'], ['metalsmith'], reload);
+    gulp.watch(['metalsmith/templates/**/*.hbt'], ['metalsmith'], reload);
 });
 
 
@@ -536,12 +538,13 @@ gulp.task('metalsmith', ['metalsmith-clean'], function() {
             
             .use(templates(configtemplates))
             // LUNR.js search engine
+            // This tasks slows down page generation big-time
             /*            
                 fields: {metadata search field: search weight}
                 ref: metadata search reference for document
                 indexPath: path for JSON index file
             */
-            .use(lunr())
+          //  .use(lunr())
             /*     .use(lunr({
                 ref: 'title',
                 fields: {
