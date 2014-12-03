@@ -641,8 +641,9 @@ var deploy = require('gulp-gh-pages');
 
 // deploy 'dist' folder to mwhelan.github.io github repo, master branch
 var options = { 
-    remoteUrl: 'https://github.com/joostvanderlaan/gulpax.git',
+ //   remoteUrl: 'https://github.com/joostvanderlaan/gulpax.git',
     branch: 'gh-pages'};
+
 gulp.task('deploy', function () {
     gulp.src('dist/**/*.*')
         .pipe(deploy(options));
