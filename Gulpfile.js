@@ -311,7 +311,7 @@ gulp.task('html', function() {
 
 // Task clean the build folder - Removes all files from the dist folder
 // Clean Output Directorys
-gulp.task('clean', del.bind(null, ['.tmp', 'dist'], {
+gulp.task('clean', del.bind(null, ['.tmp', 'dist', '!dist/CNAME'], {
     dot: true
 }));
 
