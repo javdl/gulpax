@@ -648,6 +648,6 @@ var options = {
     branch: 'gh-pages'};
 
 gulp.task('deploy', function () {
-    gulp.src('dist/**/*.*')
+    gulp.src(['dist/**/*.*', 'dist/CNAME'])
         .pipe(deploy(options));
 });
