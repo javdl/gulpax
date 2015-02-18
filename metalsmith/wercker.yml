@@ -1,0 +1,18 @@
+box: wercker-labs/docker
+build:
+  steps:
+    - script:
+        name: echo nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
+    - nhuray/docker-build:
+        tag: tutum.co/fujoost/gulp-boilerplate:${WERCKER_GIT_COMMIT:0:7}
+deploy:
+  steps:
+    - nhuray/docker-push:
+        image: tutum.co/fujoost/gulp-boilerplate:${WERCKER_GIT_COMMIT:0:7}
+        registry: tutum.co
+        email: joostvanderlaan@gmail.com
+        password: $TUTUM_PASS
+        username: fujoost
