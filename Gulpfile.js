@@ -75,8 +75,8 @@ gulp.task('images', function() {
         .pipe(gulp.dest(imgDst))
 
     .pipe($.size({
-            title: 'images'
-        }));
+        title: 'images'
+    }));
 });
 
 // Generate responsive images in sizes large, medium small + original file
@@ -84,53 +84,53 @@ gulp.task('images-responsive', function(cb) {
     runSequence('images', 'image-large', 'image-medium', 'image-small', cb);
 });
 
-gulp.task('image-large', function(){
+gulp.task('image-large', function() {
     // minify new images only
     var imgSrc = './app/images/**/*.{jpeg,jpg,png,tiff,webp}',
         imgDst = './dist/images';
     gulp.src(imgSrc)
-    .pipe($.sharp({
-      resize : [1024],
-     // max : true,
-      quality : 60,
-      progressive : true
-    }))
-    .pipe($.rename(function(path) {
-                path.basename += '-large';
+        .pipe($.sharp({
+            resize: [1024],
+            // max : true,
+            quality: 60,
+            progressive: true
+        }))
+        .pipe($.rename(function(path) {
+            path.basename += '-large';
         }))
         .pipe(gulp.dest(imgDst));
 });
 
-gulp.task('image-medium', function(){
+gulp.task('image-medium', function() {
     // minify new images only
     var imgSrc = './app/images/**/*.{jpeg,jpg,png,tiff,webp}',
         imgDst = './dist/images';
     gulp.src(imgSrc)
-    .pipe($.sharp({
-      resize : [640],
-     // max : true,
-      quality : 60,
-      progressive : true
-    }))
-    .pipe($.rename(function(path) {
-                path.basename += '-medium';
+        .pipe($.sharp({
+            resize: [640],
+            // max : true,
+            quality: 60,
+            progressive: true
+        }))
+        .pipe($.rename(function(path) {
+            path.basename += '-medium';
         }))
         .pipe(gulp.dest(imgDst));
 });
 
-gulp.task('image-small', function(){
+gulp.task('image-small', function() {
     // minify new images only
     var imgSrc = './app/images/**/*.{jpeg,jpg,png,tiff,webp}',
         imgDst = './dist/images';
     gulp.src(imgSrc)
-    .pipe($.sharp({
-      resize : [320],
-     // max : true,
-      quality : 60,
-      progressive : true
-    }))
-    .pipe($.rename(function(path) {
-                path.basename += '-small';
+        .pipe($.sharp({
+            resize: [320],
+            // max : true,
+            quality: 60,
+            progressive: true
+        }))
+        .pipe($.rename(function(path) {
+            path.basename += '-small';
         }))
         .pipe(gulp.dest(imgDst));
 });
@@ -262,12 +262,16 @@ gulp.task('styles', function() {
 
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function() {
-    var assets = $.useref.assets({searchPath: '{.tmp,app}'});
+    var assets = $.useref.assets({
+        searchPath: '{.tmp,app}'
+    });
 
     return gulp.src('app/metalsmith-dist/**/*.html')
         .pipe(assets)
         // Concatenate And Minify JavaScript
-        .pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
+        .pipe($.if('*.js', $.uglify({
+            preserveComments: 'some'
+        })))
         // .pipe(uglify().on('error', function(e) { console.log('\x07',e.message); return this.end(); }))
 
     // Remove Any Unused CSS
@@ -275,22 +279,22 @@ gulp.task('html', function() {
     // Note: If not using the Style Guide, you can delete it from
     // the next line to only include styles your project uses.
 
-       .pipe($.if('*.css', $.uncss({
-            html: [
-                'app/metalsmith-dist/index.html'
-                /*
-                'app/index.html',
-                'app/styleguide.html',
-                */
-            ],
-       
-            // CSS Selectors for UnCSS to ignore - For example for Off canvas by Jasny Bootstrap or Scotch Panels
-            ignore: [
-                /.navdrawer-container.open/,
-                /.app-bar.open/
-            ]
-        })))
-       
+    .pipe($.if('*.css', $.uncss({
+        html: [
+            'app/metalsmith-dist/index.html'
+            /*
+            'app/index.html',
+            'app/styleguide.html',
+            */
+        ],
+
+        // CSS Selectors for UnCSS to ignore - For example for Off canvas by Jasny Bootstrap or Scotch Panels
+        ignore: [
+            /.navdrawer-container.open/,
+            /.app-bar.open/
+        ]
+    })))
+
     // Concatenate And Minify Styles
     // In case you are still using useref build blocks
     .pipe($.if('*.css', $.csso()))
@@ -319,12 +323,8 @@ gulp.task('metalsmith-clean', del.bind(null, ['.tmp', 'app/metalsmith-dist'], {
     dot: true
 }));
 
-//gulp.task('metalsmith-clean', del.bind(null, ['.tmp', 'app/metalsmith-dist']));
-
-
-
 // Watch Files For Changes & Reload
-gulp.task('serve', ['styles', 'metalsmith'], function() {
+gulp.task('serve', ['styles'], function() { //, 'metalsmith'
     browserSync({
         notify: false,
         // Customize the BrowserSync console logging prefix
@@ -358,8 +358,8 @@ gulp.task('serve', ['styles', 'metalsmith'], function() {
     gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
     gulp.watch(['app/scripts/**/*.js'], ['jshint']);
     gulp.watch(['app/images/**/*'], reload);
-    gulp.watch(['metalsmith/src/**/*.md'], ['metalsmith'], reload);
-    gulp.watch(['metalsmith/templates/**/*.hbt'], ['metalsmith'], reload);
+    //    gulp.watch(['metalsmith/src/**/*.md'], ['metalsmith'], reload);
+    //    gulp.watch(['metalsmith/templates/**/*.hbt'], ['metalsmith'], reload);
 });
 
 
@@ -386,7 +386,7 @@ gulp.task('default', ['clean'], function (cb) {
 });
 */
 gulp.task('default', ['clean'], function(cb) {
-    runSequence(['styles', 'metalsmith'], ['jshint', 'html', 'images-responsive', 'fonts', 'copy'], 'copymetalsmithtoroot', cb);
+    runSequence('styles', ['jshint', 'html', 'images-responsive', 'fonts', 'copy'], 'copymetalsmithtoroot', cb);
 });
 
 // Run PageSpeed Insights
@@ -401,214 +401,21 @@ gulp.task('pagespeed', pagespeed.bind(null, {
 }));
 
 
+gulp.task('metalsmith', function(cb) { // does not work. Run: node metalsmith/index from root dir
+    $.exec('node metalsmith/index.js', function(err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+    });
+})
+
+
+
 // Load custom tasks from the `tasks` directory
 // try { require('require-dir')('tasks'); } catch (err) { console.error(err); }
 
-
-
-
-
-// %
-
-// METALSMITH
-//gulp.task('ms', ['metalsmithclean'], function(cb) {
-//    runSequence(['copydisttometalsmith', 'metalsmith'], 'metalsmithhtml', cb);
-//runSequence('styles', ['jshint', 'js', 'analytics', 'html', 'images', 'fonts', 'copy'], cb);
-//});
-
-// Compile and Automatically Prefix Stylesheets
-// run metalsmith (static site generator)
-// gulp.task('metalsmith', function() {
-gulp.task('metalsmith', ['metalsmith-clean'], function() {
-    // tell me what the error is!
-    // -> prevent .pipe from dying on error w/ gulp-plumber
-    // -> and give more useful error messages
-    var showError = function(err) {
-        $.util.beep();
-        console.log(err);
-    };
-
-    // useful file paths (can later be put for global use)
-    var path = {
-        src: 'metalsmith/src',
-        build: 'app/metalsmith-dist',
-        //      deploy: 'deploy',
-        bower: 'metalsmith/bower_components',
-        templates: 'metalsmith/templates',
-        //     assets: 'assets',
-        css: 'metalsmith/assets/styles',
-        scripts: 'scripts',
-        sass: 'scss'
-            //     js: 'assets/scripts',
-            //     img: 'assets/images'
-    };
-
-    var gulpsmith = require('gulpsmith'),
-        frontmatter = require('gulp-front-matter'),
-        assign = require('lodash.assign'),
-        handlebars = require('handlebars'), // see .use(templates)
-        markdown = require('metalsmith-markdown'),
-        templates = require('metalsmith-templates'),
-        ignore = require('metalsmith-ignore'),
-        permalinks = require('metalsmith-permalinks'),
-        // This plugin provides a simple way to ensure that front matter values regarding SEO are valid.
-        seo = require('metalsmith-seo-checker'),
-        // A Metalsmith plugin that adds support for draft, private, and future-dated posts. Enables you to do multiple builds for production and development. Gives you a callback so you can automate rebuilding metalsmith with a cron job or node script when future-dated posts become published.
-        publish = require('metalsmith-publish'),
-        // A Metalsmith plugin that integrates the Lunr.js client side search engine.
-        lunr = require('metalsmith-lunr'),
-        // Highlight.js code highlighting in Markdown files (Include a highlight.js theme somewhere in your templates.)
-        metallic = require('metalsmith-metallic'),
-        // A Metalsmith plugin that extracts headings from HTML files and attaches them to the file's metadata.
-        //       headings = require('metalsmith-headings'),
-        collections = require('metalsmith-collections');
-
-    var configtemplates = {};
-    configtemplates.engine = 'handlebars';
-    configtemplates.partials = {
-        'header': 'partials/header',
-        'footer': 'partials/footer',
-        'navbar': 'partials/navbar',
-        'offcanvas-scotchpanels': 'partials/offcanvas-scotchpanels'
-    };
-    configtemplates.directory = './metalsmith/templates';
-
-    var fmFilter = $.filter('**/*.{html,md,hbt}'); // filter out files with front matter
-
-    var findTemplate = function(config) {
-        var pattern = new RegExp(config.pattern);
-
-        // findTemplate Plugin to give all posts the posts template by default
-        return function(files, metalsmith, done) {
-            for (var file in files) {
-                if (pattern.test(file)) {
-                    var _f = files[file];
-                    if (!_f.template) {
-                        _f.template = config.templateName;
-                    }
-                }
-            }
-            done();
-        };
-    };
-
-    return gulp.src('./metalsmith/src/**/*')
-        .pipe($.plumber({
-            errorHandler: showError
-        }))
-        .pipe(fmFilter)
-        // grab files with front matter and assign them as a property so metalsmith will find it
-        .pipe(frontmatter({
-            property: 'frontMatter'
-        })).on('data', function(file) {
-            assign(file, file.frontMatter);
-            delete file.frontMatter;
-        })
-        // remove the filter (back to everything in /src) and let metalsmith do its thing
-        .pipe(fmFilter.restore())
-        .pipe(
-            gulpsmith()
-            .use(publish({
-                draft: false
-            }))
-            .metadata({
-                'title': 'Gulp Metalsmith Bootstrap 3 Boilerplate',
-                'description': 'Gulp Metalsmith Bootstrap 3 Boilerplate - Better Site Building'
-            })
-            .use(collections({
-                pages: {
-                    pattern: 'content/pages/*.md'
-                },
-                posts: {
-                    pattern: 'content/posts/*.md',
-                    sortBy: 'date',
-                    reverse: true
-                }
-            }))
-            // use the findTemplate Plugin to give all posts the posts template by default
-            .use(findTemplate({
-                pattern: 'posts',
-                templateName: 'post.hbt'
-            }))
-            .use(markdown())
-          /* Breaks assets not using prepend / */
-            .use(permalinks({
-                pattern: ':title'
-            }))
-            
-            .use(templates(configtemplates))
-            // LUNR.js search engine
-            // This tasks slows down page generation big-time
-            /*            
-                fields: {metadata search field: search weight}
-                ref: metadata search reference for document
-                indexPath: path for JSON index file
-            */
-          //  .use(lunr())
-            /*     .use(lunr({
-                ref: 'title',
-                fields: {
-                    contents: 1,
-                    tags: 10
-                }
-            }))
-*/
-            //            .use(metallic())
-            /*
-            .use(templates({
-                'engine': 'handlebars',
-                'partials': {
-                    'header': 'partials/header',
-                    'footer': 'partials/footer',
-                    'navbar': 'partials/navbar'
-                },
-                'directory': './' + path.src + '/' + path.templates
-            }))
-*/
-            //           .use(headings('h2'))
-            /*        .use(seo({
-                ignoreFiles: ['special.html'],
-                lengths: {
-                    title: 60, // This is the default value
-                    description: 160 // This is the default value
-                },
-                seo: {
-                    title: true, // This is the default value
-                    description: 'Foo Bar Baz', // There is no default for this
-                    robots: 'index, follow' // This is the default value
-                },
-                ogp: {
-                    defaultType: 'website', // This is the default value
-                    defaultImage: 'inschrijfformulier.com/logo.png', // The default value for this is false
-                    ignoreMissingImage: false // This is the default value
-                }
-            }))
-*/
-            .use(ignore([
-                path.templates + '/**/*',
-                path.css + '/**/*',
-                path.sass + '/**/*',
-                path.scripts + '/**/*',
-                path.bower + '/**/*'
-            ]))
-            /*     .use(permalinks(':collection/:title'))
-                         .use(collections({
-                             'chapters': 'chapters/*.md'
-                         }))
-*/
-        )
-        .pipe(gulp.dest('./' + path.build))
-        //    .pipe($.connect.reload());
- .pipe($.size({
-            title: 'Metalsmith pages'
-        }));
-});
-
 // Critical Render path CSS tasks - https://github.com/addyosmani/critical-path-css-demo#tutorial
-
-// Copy our site styles to a site.css file
-// for async loading later
-gulp.task('copystyles', function() {
+gulp.task('copystyles', function() { // Copy our site styles to a site.css file for async loading later
     return gulp.src(['dist/styles/main.css'])
         .pipe($.rename({
             basename: 'site'
@@ -643,11 +450,12 @@ gulp.task('criticalstyles', ['copystyles'], function(cb) {
 var deploy = require('gulp-gh-pages');
 
 // deploy 'dist' folder to mwhelan.github.io github repo, master branch
-var options = { 
- //   remoteUrl: 'https://github.com/joostvanderlaan/gulpax.git',
-    branch: 'gh-pages'};
+var options = {
+    //   remoteUrl: 'https://github.com/joostvanderlaan/gulpax.git',
+    branch: 'gh-pages'
+};
 
-gulp.task('deploy', function () {
+gulp.task('deploy', function() {
     gulp.src(['dist/**/*.*', 'dist/CNAME'])
         .pipe(deploy(options));
 });

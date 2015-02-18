@@ -45,15 +45,15 @@ var path = {
     sass: 'scss'
 };
 
-var configtemplates = {};
-configtemplates.engine = 'handlebars';
-configtemplates.partials = {
-    'header': 'partials/header',
-    'footer': 'partials/footer',
-    'navbar': 'partials/navbar',
-    'offcanvas-scotchpanels': 'partials/offcanvas-scotchpanels'
-};
-configtemplates.directory = 'templates';
+// var configtemplates = {};
+// configtemplates.engine = 'handlebars';
+// configtemplates.partials = {
+//     'header': 'partials/header',
+//     'footer': 'partials/footer',
+//     'navbar': 'partials/navbar',
+//     'offcanvas-scotchpanels': 'partials/offcanvas-scotchpanels'
+// };
+// configtemplates.directory = 'templates';
 
 var findTemplate = function(config) {
     var pattern = new RegExp(config.pattern);
@@ -70,6 +70,11 @@ var findTemplate = function(config) {
         done();
     };
 };
+
+Handlebars.registerPartial('header', fs.readFileSync(__dirname + '/templates/partials/header.hbt').toString());
+Handlebars.registerPartial('footer', fs.readFileSync(__dirname + '/templates/partials/footer.hbt').toString());
+Handlebars.registerPartial('navbar', fs.readFileSync(__dirname + '/templates/partials/navbar.hbt').toString());
+Handlebars.registerPartial('offcanvas-scotchpanels', fs.readFileSync(__dirname + '/templates/partials/offcanvas-scotchpanels.hbt').toString());
 
 Metalsmith(__dirname)
     .use(publish({
@@ -93,8 +98,8 @@ Metalsmith(__dirname)
     .use(permalinks({
         pattern: ':title'
     }))
-    //.use(templates('handlebars'))
-    .use(templates(configtemplates))
+    .use(templates('handlebars'))
+    //.use(templates(configtemplates))
     .use(sass({
         outputStyle: 'compressed'
     }))
