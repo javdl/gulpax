@@ -4,7 +4,7 @@
 npm install gulp -g && npm install bower -g
 ```
 
-This Boilerplate uses `gulp-sharp` which depends on [sharp](https://github.com/lovell/sharp). Sharp is one of the fastest Node libraries for resizing JPEG, PNG, WebP and TIFF images. 
+This Boilerplate uses `gulp-sharp` which depends on [sharp](https://github.com/lovell/sharp). Sharp is one of the fastest Node libraries for resizing JPEG, PNG, WebP and TIFF images.
 
 Before installing `gulp-sharp` (or running `npm install`) you should install the [libvips](https://github.com/jcupitt/libvips) library. Further information and instructions can be found in the [sharp readme](https://github.com/lovell/sharp#installation).
 
@@ -12,11 +12,12 @@ Before installing `gulp-sharp` (or running `npm install`) you should install the
 
 ```sh
 sudo apt-get install libvips-dev
-
+sudo apt-get install libgsf-1-dev
+sudo apt-get install build-essential g++ git cmake zlib1g-dev ant libbz2-dev
 ```
 
 ## Install
-
+Use node v0.10 for install, but metalsmith needs v0.12 to run (till I find a fix)
 ```sh
 npm install
 ```
