@@ -13,7 +13,6 @@ Before installing `gulp-sharp` (or running `npm install`) you should install the
 ```sh
 sudo apt-get install libvips-dev
 sudo apt-get install libgsf-1-dev
-sudo apt-get install build-essential g++ git cmake zlib1g-dev ant libbz2-dev
 ```
 
 ## Install
