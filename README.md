@@ -16,7 +16,6 @@ sudo apt-get install libgsf-1-dev
 ```
 
 ## Install
-Use node v0.10 for install, but metalsmith needs v0.12 to run (till I find a fix)
 ```sh
 npm install
 ```
@@ -62,4 +61,13 @@ cd vips-7.40.11
 ./configure
 make
 sudo make install
+```
+
+## Run Metalsmith only without Gulp
+```sh
+node metalsmith/index.js
+```
+New Metalsmith uses ES6 syntax, need to run it with:
+```sh
+node --harmony metalsmith/index.js
 ```

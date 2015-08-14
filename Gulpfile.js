@@ -32,6 +32,8 @@ var browserSync = require('browser-sync');
 var pagespeed = require('psi');
 var reload = browserSync.reload;
 
+var exec = require('child_process').exec;
+
 var AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
     'ie_mob >= 10',
@@ -400,9 +402,9 @@ gulp.task('pagespeed', pagespeed.bind(null, {
     strategy: 'mobile'
 }));
 
-
-gulp.task('metalsmith', function(cb) { // does not work. Run: node metalsmith/index from root dir
-    $.exec('node metalsmith/index.js', function(err, stdout, stderr) {
+// If you just want to run a command, just run the command, don't use the gulp-exec plugin
+gulp.task('metalsmith', function(cb) { // You can also run: 'node --harmony metalsmith/index.js' from root dir
+    exec('node --harmony metalsmith/index.js', function(err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);
