@@ -52,7 +52,7 @@
     "gulp-wrap": "~0.11.0",
     "gulp-zopfli": "^1.0.0",
     "gulpsmith": "^0.5.3",
-    "handlebars": "^3.0.0",
+    "handlebars": "^4.7.3",
     "jshint-stylish": "^2.0.1",
     "lodash": "^3.2.0",
     "lodash.assign": "^3.0.0",
